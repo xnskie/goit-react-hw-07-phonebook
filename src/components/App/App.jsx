@@ -30,7 +30,7 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchAllContacts());
   }, [dispatch]);
-
+//onub
 
   return (
     <Container>
