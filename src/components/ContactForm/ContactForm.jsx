@@ -1,39 +1,27 @@
 import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllCons } from 'redux/contacts/contacts-selector';
-import { addContact } from 'redux/contacts/contacts-slice';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contacts-operations';
 
 import { Formik, Form, ErrorMessage } from 'formik';
 
 import { Button, Input, Label } from './ContactForm.styled';
 
 function ContactForm () {
-  const contacts = useSelector(getAllCons);
+
   const dispatch = useDispatch();
 
-  const onAddContacts = ({ name, number }) => {
-    const normilizedName = name.toLowerCase();
-    const equalName = contacts.find(({ name }) => {
-      return (name.toLowerCase() === normilizedName)
-    });
-    if (equalName) return (alert(equalName.name + ' is already in contacts.'), alert.preventDefault());
-
-    dispatch(addContact(name, number ))
-  };
   const [name] = useState('');
   const [number] = useState('');
-//chh
-// iev
-  const handleSubmit = (values, action) => {
-    onAddContacts(values);
-    action.resetForm();
-  };
+
+const handleAddContact = contact => {
+  dispatch(addContact(contact));
+}
 
 
   return (
-    <Formik initialValues={{ name, number }} onSubmit={handleSubmit}>
+    <Formik initialValues={{ name, number }} onSubmit={handleAddContact}>
       <Form>
         <Label>
           Name

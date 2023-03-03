@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 // import { setFilter } from 'redux/filter/filter-slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { getFilter } from 'redux/filter/filter-selectors';
+import { selectFilter } from 'redux/selectors';
 import { Input } from './Filter.styled';
-import { filterContacts } from 'redux/filter/filter-slice';
+import { filterContacts } from 'redux/filter-slice';
 
 function Filter () {
   // const filter = useSelector(getFilter);
@@ -15,7 +15,7 @@ function Filter () {
   //   dispatch(setFilter(target.value));
   // };
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
   const handleFilter = event =>
     dispatch(filterContacts(event.currentTarget.value.toLowerCase()));
 return (

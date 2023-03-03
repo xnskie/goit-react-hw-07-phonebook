@@ -1,12 +1,13 @@
 
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { ContactsTitle, Container, FilterTitle, Title } from './App.styled';
 
 import ContactForm from 'components/ContactForm';
 import ContactList from 'components/ContactList';
 import Filter from 'components/Filter';
-import { getAllCons } from 'redux/contacts/contacts-selector';
+import { fetchAllContacts } from 'redux/contacts-operations';
+import { selectContacts, selectIsLoading, selectError } from 'redux/selectors';
 
 
 // export const getFilteredContacts = ({ contacts, filter }) => {
@@ -21,25 +22,30 @@ import { getAllCons } from 'redux/contacts/contacts-selector';
 // }
 
 const App = () => {
-  const contacts = useSelector(getAllCons);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts))
-  }, [contacts])
+    dispatch(fetchAllContacts());
+  }, [dispatch]);
+
 
   return (
-      <Container>
-        <Title>Phonebook</Title>
-        <ContactForm/>
-        <ContactsTitle>Contacts</ContactsTitle>
-        <FilterTitle>Find contacts by name</FilterTitle>
-        <Filter/>
-        {contacts.length ? (
-          <ContactList/>
-        ) : (
-          <p>No contacts yet</p>
-        )}
-      </Container>
+    <Container>
+      <Title>Phonebook</Title>
+      <ContactForm />
+      <ContactsTitle>Contacts</ContactsTitle>
+      <FilterTitle>Find contacts by name</FilterTitle>
+      <Filter />
+      {isLoading && !error && <p>Loading...🚀</p>}
+      {contacts.length ? (
+        <ContactList />
+      ) : (
+        <p>No contacts yet</p>
+      )}
+    </Container>
   );
 }
 
